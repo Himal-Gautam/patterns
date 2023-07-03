@@ -40,7 +40,7 @@ public class DiseaseShStrategy implements IndianDiseaseStat {
             //store it in an object
             DiseaseShResponse response = getDiseaseShResponseResponses();
             //get the response using the getCases() method
-            int activeCases = response.getCases().GetActiveCount()
+            float activeCases = response.getCases();
             //return the response after rounding it up to 0 decimal places
             int roundedActiveCases = (int) Math.ceil(activeCases);
             return String.valueOf(roundedActiveCases);
