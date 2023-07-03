@@ -33,17 +33,28 @@ public class JohnHopkinsStrategy implements IndianDiseaseStat {
 
 	@Override
 	public String GetActiveCount() {
-		
-		
 		//try block
+		try {
 			//get response from the getJohnHopkinResponses method
-			//filter the data based such that country equals India (use getCountry() to get the country value)
-			//Map the data to "confirmed" value (use getStats() and getConfirmed() to get stats value and confirmed value)
-			//Reduce the data to get a sum of all the "confirmed" values
+			JohnHopkinResponse[] responses = getJohnHopkinResponses();
+			int activeCases = Arrays.stream(responses)
+					//filter the data based such that country equals India (use getCountry() to get the country value)
+					.filter(response -> response.getCountry().equalsIgnoreCase("India"))
+					//Map the data to "confirmed" value (use getStats() and getConfirmed() to get stats value and confirmed value)
+					.mapToInt(response -> Math.round(response.getStats().getConfirmed()))
+					//Reduce the data to get a sum of all the "confirmed" values
+					.sum();
 			//return the response after rounding it up to 0 decimal places
+			return String.valueOf(activeCases);
+		} 
 		//catch block
+		catch (Exception e) {
 			//log the error
+            logger.error("Error while fetching active disease count from John Hopkins data", e);
 			//return null
+            return null;
+        }
+		
 
 	
 
