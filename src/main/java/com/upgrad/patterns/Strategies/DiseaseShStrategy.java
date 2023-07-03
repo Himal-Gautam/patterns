@@ -25,31 +25,30 @@ public class DiseaseShStrategy implements IndianDiseaseStat {
     @Value("${config.diseaseSh-io-url}")
     private String baseUrl;
 
-    public DiseaseShStrategy()
-    {
+    public DiseaseShStrategy() {
         restTemplate = RestServiceGenerator.GetInstance();
     }
 
     @Override
     public String GetActiveCount() {
-        //write a try catch block here
-        
-        //try block
-    	try {
-            //obtain response from the getDiseaseShResponseResponses() method
-            //store it in an object
+        // write a try catch block here
+
+        // try block
+        try {
+            // obtain response from the getDiseaseShResponseResponses() method
+            // store it in an object
             DiseaseShResponse response = getDiseaseShResponseResponses();
-            //get the response using the getCases() method
+            // get the response using the getCases() method
             float activeCases = response.getCases();
-            //return the response after rounding it up to 0 decimal places
+            // return the response after rounding it up to 0 decimal places
             int roundedActiveCases = (int) Math.ceil(activeCases);
             return String.valueOf(roundedActiveCases);
-        } 
-    	//catch block
+        }
+        // catch block
         catch (Exception e) {
-            //log the error
+            // log the error
             logger.error("Error while fetching active disease count from Disease.io source", e);
-            //return null
+            // return null
             return null;
         }
     }
@@ -57,14 +56,14 @@ public class DiseaseShStrategy implements IndianDiseaseStat {
     private DiseaseShResponse getDiseaseShResponseResponses() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        headers.add("user-agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-
 
         DiseaseShResponse temp = restTemplate.exchange(
                 baseUrl, HttpMethod.GET, new HttpEntity<Object>(headers),
                 DiseaseShResponse.class).getBody();
-        
+
         System.out.println(temp);
         return temp;
     }

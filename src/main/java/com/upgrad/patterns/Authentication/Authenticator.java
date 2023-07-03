@@ -7,23 +7,23 @@ import com.upgrad.patterns.Middleware.JwtAuthProcessor;
 import javax.servlet.http.HttpServletRequest;
 
 public class Authenticator {
-	
-    
-    //create a public static method GetAuthProcessor of the return type AuthenticationProcessor
-	public static AuthenticationProcessor GetAuthProcessor() {
-        // create an object of type JwtAuthProcessor
-		AuthenticationProcessor jwtAuthProcessor = new JwtAuthProcessor(null);
-		
-        // Chain Authentication processors, first JWT processor is to be used first and then basic auth processor
-		AuthenticationProcessor basicAuthProcessor = new BasicAuthProcessor(jwtAuthProcessor);
-		
-        // return the object
-		return basicAuthProcessor;
-	}
 
-    public static AuthenticationProvider GetAuthProvider(HttpServletRequest request)
-    {
-        if(request.getHeader("Authorization") != null)
+    // create a public static method GetAuthProcessor of the return type
+    // AuthenticationProcessor
+    public static AuthenticationProcessor GetAuthProcessor() {
+        // create an object of type JwtAuthProcessor
+        AuthenticationProcessor jwtAuthProcessor = new JwtAuthProcessor(null);
+
+        // Chain Authentication processors, first JWT processor is to be used first and
+        // then basic auth processor
+        AuthenticationProcessor basicAuthProcessor = new BasicAuthProcessor(jwtAuthProcessor);
+
+        // return the object
+        return basicAuthProcessor;
+    }
+
+    public static AuthenticationProvider GetAuthProvider(HttpServletRequest request) {
+        if (request.getHeader("Authorization") != null)
             return new JwtAuthProvider(request.getHeader("Authorization"));
         return new BasicAuthProvider(request.getHeader("Username"), request.getHeader("Password"));
     }

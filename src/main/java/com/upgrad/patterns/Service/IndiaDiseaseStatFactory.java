@@ -13,32 +13,29 @@ public class IndiaDiseaseStatFactory {
     private IndianDiseaseStat johnHopkinsStrategy;
 
     @Autowired
-    public IndiaDiseaseStatFactory(DiseaseShStrategy diseaseShStrategy, JohnHopkinsStrategy johnHopkinsStrategy)
-    {
+    public IndiaDiseaseStatFactory(DiseaseShStrategy diseaseShStrategy, JohnHopkinsStrategy johnHopkinsStrategy) {
         this.diseaseShStrategy = diseaseShStrategy;
         this.johnHopkinsStrategy = johnHopkinsStrategy;
     }
 
-    
-    //create a method named GetInstance with return type as IndianDiseaseStat and parameter of type sourceType
+    // create a method named GetInstance with return type as IndianDiseaseStat and
+    // parameter of type sourceType
     public IndianDiseaseStat GetInstance(SourceType sourceType) {
-        //create a conditional statement
+        // create a conditional statement
         switch (sourceType) {
-            //if the sourceType is JohnHopkins
+            // if the sourceType is JohnHopkins
             case JohnHopkins:
-                //return johnHopkinsStrategy
+                // return johnHopkinsStrategy
                 return johnHopkinsStrategy;
-            //if the sourceType is DiseaseSh
+            // if the sourceType is DiseaseSh
             case DiseaseSh:
-                //return diseaseShStrategy
+                // return diseaseShStrategy
                 return diseaseShStrategy;
-            //create a message for invalid disease strategy/sourceType
+            // create a message for invalid disease strategy/sourceType
             default:
-                //throw the message as an Illegal argument exception
+                // throw the message as an Illegal argument exception
                 throw new IllegalArgumentException("Invalid disease strategy/sourceType: " + sourceType);
         }
-    }	
-    
-    
-    
+    }
+
 }

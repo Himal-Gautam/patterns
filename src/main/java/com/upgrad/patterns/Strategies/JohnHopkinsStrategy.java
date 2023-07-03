@@ -33,39 +33,38 @@ public class JohnHopkinsStrategy implements IndianDiseaseStat {
 
 	@Override
 	public String GetActiveCount() {
-		//try block
+		// try block
 		try {
-			//get response from the getJohnHopkinResponses method
+			// get response from the getJohnHopkinResponses method
 			JohnHopkinResponse[] responses = getJohnHopkinResponses();
 			int activeCases = Arrays.stream(responses)
-					//filter the data based such that country equals India (use getCountry() to get the country value)
+					// filter the data based such that country equals India (use getCountry() to get
+					// the country value)
 					.filter(response -> response.getCountry().equalsIgnoreCase("India"))
-					//Map the data to "confirmed" value (use getStats() and getConfirmed() to get stats value and confirmed value)
+					// Map the data to "confirmed" value (use getStats() and getConfirmed() to get
+					// stats value and confirmed value)
 					.mapToInt(response -> Math.round(response.getStats().getConfirmed()))
-					//Reduce the data to get a sum of all the "confirmed" values
+					// Reduce the data to get a sum of all the "confirmed" values
 					.sum();
-			//return the response after rounding it up to 0 decimal places
+			// return the response after rounding it up to 0 decimal places
 			return String.valueOf(activeCases);
-		} 
-		//catch block
+		}
+		// catch block
 		catch (Exception e) {
-			//log the error
-            logger.error("Error while fetching active disease count from John Hopkins data", e);
-			//return null
-            return null;
-        }
-		
-
-	
+			// log the error
+			logger.error("Error while fetching active disease count from John Hopkins data", e);
+			// return null
+			return null;
+		}
 
 	}
 
 	private JohnHopkinResponse[] getJohnHopkinResponses() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+		headers.add("user-agent",
+				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
 		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-
 
 		return restTemplate.exchange(
 				baseUrl, HttpMethod.GET, new HttpEntity<Object>(headers),
